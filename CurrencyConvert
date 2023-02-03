@@ -1,0 +1,72 @@
+package FinalProject;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Scanner;
+
+public class CurrencyConvert {
+
+   static double a,c;
+
+
+    public void Gui(){JFrame jf=new JFrame("CurrencyConvert");
+        jf.setSize(800,600);
+        jf.setLayout(null);
+
+        JLabel jl=new JLabel("Currency Convert");
+        jl.setBounds(300,50,100,50);
+        jf.add(jl);
+        JLabel jl2=new JLabel("Select");
+        jl2.setBounds(50,120,50,30);
+        jf.add(jl2);
+        String cur[]={"dolor","Pound","Rubel","Euro"," Canadian dollar"};
+
+      JComboBox <String >list=new JComboBox<>(cur);
+        list.setBounds(120,120,120,30);
+        jf.add(list);
+
+        JLabel jl5=new JLabel("Enter amount  ");
+        jl5.setBounds(290,120,100,30);
+        jf.add(jl5);
+
+        JTextField jtf=new JTextField();
+        jtf.setBounds(400,120,80,30);
+        jf.add(jtf);
+
+        JButton jb=new JButton("Convert...");
+        jb.setBounds(50,200,100,30);
+        jf.add(jb);
+
+        JLabel jl3=new JLabel();
+        jl3.setBounds(200,200,100,30);
+        jf.add(jl3);
+String note="Attention : Please enter only  indain currency ";
+        JLabel jl4=new JLabel(note);
+        jl4.setBounds(80,240,300,30);
+        jf.add(jl4);
+
+        ActionListener al=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                a= Double.parseDouble(jtf.getText());
+             String b= (String) list.getSelectedItem();
+             if(b=="Pound"){jl3.setText(String.valueOf("£  "+a*0.0099));}
+             else if (b=="dolor") {jl3.setText(String.valueOf("$  " +a*0.012));}
+             else if (b=="Rubel") {jl3.setText(String.valueOf(" ₽  "+a*0.8528110312));}
+             else if (b=="Euro") {jl3.setText(String.valueOf("€  "+a*0.011));}
+             else if (b==" Canadian dollar") {jl3.setText(String.valueOf("C$  "+a*0.0163));}
+            }
+        };
+        jb.addActionListener(al);
+
+        jf.setVisible(true);
+    }
+    public static void main(String[] args) {
+
+CurrencyConvert cc=new CurrencyConvert();
+          cc.Gui();
+       
+    }
+}
+
