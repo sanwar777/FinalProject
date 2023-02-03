@@ -1,0 +1,116 @@
+package FinalProject;
+
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+
+public class TcgPage {
+    public static void main(String[] args) {
+        Tcg t=new Tcg();
+        t.fram();
+    }
+}
+class Tcg{
+    public void fram(){
+        JFrame jf=new JFrame("TCG");
+        jf.setBounds(100,50,500,500);
+        jf.setLayout(null);
+        JLabel jl=new JLabel(" Tcg Enrollment ");
+    
+        jl.setBounds(200,30,300,50);
+        jf.add(jl);
+
+        JLabel jln=new JLabel(" Name ");
+        jln.setForeground(Color.LIGHT_GRAY);
+        jln.setBounds(50,100,300,50);
+        jf.add(jln);
+        JTextField jtf=new JTextField();
+        jtf.setBounds(100,110,300,30);
+        jf.add(jtf);
+        JLabel jlr=new JLabel("Rank");
+        jlr.setForeground(Color.LIGHT_GRAY);
+        jlr.setBounds(50,150,300,50);
+        jf.add(jlr);
+        JTextField jtfr=new JTextField();
+        jtfr.setBounds(100,160,300,30);
+        jf.add(jtfr);
+        JLabel jld=new JLabel("Domain");
+        jld.setForeground(Color.LIGHT_GRAY);
+        jld.setBounds(50,200,300,50);
+        jf.add(jld);
+        JTextField jtfd=new JTextField();
+        jtfd.setBounds(100,210,300,30);
+        jf.add(jtfd);
+
+        JLabel jlm=new JLabel("Mob.No");
+        jlm.setForeground(Color.LIGHT_GRAY);
+        jlm.setBounds(50,250,300,50);
+        jf.add(jlm);
+        JTextField jtfm=new JTextField();
+        jtfm.setBounds(100,260,300,30);
+        jf.add(jtfm);
+        JLabel jle=new JLabel("Email_Id");
+        jle.setForeground(Color.LIGHT_GRAY);
+        jle.setBounds(50,300,300,50);
+        jf.add(jle);
+        JTextField jtfe=new JTextField();
+        jtfe.setBounds(100,310,300,30);
+        jf.add(jtfe);
+
+        JButton jb=new JButton("Enroll");
+        jb.setBounds(150,350,200,50);
+        jb.setBackground(Color.LIGHT_GRAY);
+        jf.add(jb);
+
+        JLabel ls=new JLabel();
+        ls.setBounds(150,400,200,50);
+        ls.setForeground(Color.PINK);
+        jf.add(ls);
+
+        ActionListener al=new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                String n,r,d,m,em;
+                n=jtf.getText();r=jtfr.getText();d=jtfd.getText();m=jtfm.getText();em=jtfe.getText();
+                System.out.println(n+r+d+m+em);
+
+                if(n.equals("")||r.equals("")||d.equals("")||m.equals("")||em.equals("")){
+                    ls.setText("Fill all Field");
+                }
+                else {ls.setText("Enrollment successfully");}
+                
+                try{
+                    File f1=new File("enroll.json");
+                    FileWriter f=new FileWriter("enroll.json");
+                JSONParser par=new JSONParser();
+                Object obj=par.parse(new FileReader("enroll.json"));
+                JSONArray arr1= (JSONArray)(obj);
+
+                    JSONObject job=new JSONObject();
+                    job.put("Name:",n);
+                    job.put("Rank:",r);
+                    job.put("Domain:",d);
+                    job.put("Mob.No:",m);
+                    job.put("Email_Id:",em);
+                    arr1.add(job);
+                    f.write(arr1.toJSONString());
+                    f.flush();
+                    f.close();
+                }catch(IOException | ParseException b){
+                    System.out.println(b);
+                }
+            }
+        };jb.addActionListener(al);
+        jf.setVisible(true);
+    }
+}
+
+
+
