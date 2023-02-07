@@ -1,0 +1,166 @@
+package FinalProject;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Random;
+public class PasswardGenrate {String a,b,c,d,x,y;int i,j;
+    public void des(){
+
+        JFrame jf=new JFrame("Passward Genrate");
+        jf.setSize(800,550);
+        jf.setLayout(null);
+
+        JLabel jl=new JLabel("Registration Form ");
+        jl.setBounds(200,0,150,20);
+        jf.add(jl);
+
+        JLabel jl2=new JLabel("Name :- ");
+        jl2.setBounds(10,30,50,20);
+        jf.add(jl2);
+
+        JTextField jtf=new JTextField();
+        jtf.setBounds(120,30,120,20);
+        jf.add(jtf);
+
+       JLabel jl3=new JLabel("Mobile Number :-");
+        jl3.setBounds(10,60,100,20);
+        jf.add(jl3);
+
+        JTextField jtf2=new JTextField();
+        jtf2.setBounds(120,60,120,20);
+        jf.add(jtf2);
+
+        JLabel jl4=new JLabel("E_mail Id :-");
+        jl4.setBounds(10,90,100,20);
+        jf.add(jl4);
+
+        JTextField jtf3=new JTextField();
+        jtf3.setBounds(120,90,120,20);
+        jf.add(jtf3);
+
+        JButton jb=new JButton("SignUp ");
+        jb.setBounds(40,160,90,30);
+        jf.add(jb);
+
+        JLabel jl6=new JLabel();
+        jl6.setBounds(150,160,400,30);
+        jf.add(jl6);
+
+        JLabel jl7=new JLabel();
+        jl7.setBounds(30,220,300,20);
+        jf.add(jl7);
+
+        JLabel jl5=new JLabel();
+        jl5.setBounds(30,250,300,20);
+        jf.add(jl5);
+
+        JButton jb2=new JButton("Sign");
+        jb2.setBounds(480,160,90,30);
+        jf.add(jb2);
+
+        ActionListener asl=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Random rr=new Random();
+               i=  rr.nextInt(100000,999999);
+              String data2=jtf3.getText();
+              a=jtf.getText();b=jtf2.getText();c=jtf3.getText();
+
+              if(a.equals("")||b.equals("")||c.equals("")){
+                  jl7.setText("Please all field submit ");
+              }
+              else {
+              jl6.setText("Congraluction !  your account create successfully");
+              jl7.setText("Your Login Id :- "+data2);
+              jl5.setText("Your passward :- "+i);}
+
+                try{
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection cc= DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","123456");
+                    Statement st2=cc.createStatement();
+                    String ins="insert into user_data3(Name,mobile_no,email,pass) values(\""+a+"\",\""+b+"\",\""+c+"\",\""+i+"\")";
+                    System.out.println(ins);
+                    st2.executeUpdate(ins);
+                }
+                catch (Exception ek){
+                    System.out.println(ek);
+                }
+            }
+        };
+          jb.addActionListener(asl);
+          ActionListener al2=new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  PasswardGenrate psg=new PasswardGenrate();
+                  psg.sign();
+              }
+          };
+          jb2.addActionListener(al2);
+
+        jf.setVisible(true);
+    }
+    public void sign(){
+        JFrame frame=new JFrame("CCTNS");
+        frame.setSize(800,500);
+        frame.setLayout(null);
+        frame.setBounds(100,100,400,200);
+        JButton button=new JButton("Sign  !!");
+        button.setBounds(80,110,100,30);
+        frame.add(button);
+
+        JLabel lb=new JLabel("Email_id : ");
+        lb.setBounds(5,40,160,20);
+        frame.add(lb);
+
+        JTextField tf=new JTextField();
+        tf.setBounds(80,40,160,20);
+        // tf.setText("Please enter Your Email_id !!");
+        frame.add(tf);
+
+        JLabel lb2=new JLabel("password :");
+        lb2.setBounds(5,80,160,20);
+        frame.add(lb2);
+
+        JPasswordField pass=new JPasswordField();
+        // pass.setText("Password !!");
+        pass.setBounds(80,80,160,20);
+        frame.add(pass);
+
+        JLabel jl=new JLabel();
+        jl.setBounds(200,110,100,30);
+        frame.add(jl);
+        ActionListener al3=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                x=tf.getText();
+                j= Integer.parseInt(pass.getText());
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","123456");
+               String qr="select email from user_data3 where pass="+j+"";
+               Statement st2= con.createStatement();
+                    ResultSet rs= st2.executeQuery(qr);
+                    while (rs.next()){
+                        y=rs.getString("email");
+                    }
+                }catch (Exception ee){
+                    System.out.println(ee);
+                }
+                if(x.equals(y)){jl.setText("Congratulations !!");}
+                else{jl.setText("Sorry !!");}
+            }
+        };
+        button.addActionListener(al3);
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+
+        PasswardGenrate psg=new PasswardGenrate();
+        psg.des();
+    }
+}
