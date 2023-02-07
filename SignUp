@@ -1,0 +1,83 @@
+package FinalProject;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileWriter;
+
+public class SignUp {
+    void show(){
+
+        JFrame frame=new JFrame("CCTNS SignUp");
+        frame.setSize(300,400);
+        frame.setLayout(null);
+        frame.setBounds(100,100,400,200);
+
+        JLabel name=new JLabel("Name : ");
+        name.setBounds(5,1,160,20);
+        frame.add(name);
+        JTextField tfn=new JTextField();
+        tfn.setBounds(120,4,160,20);
+        frame.add(tfn);
+
+        JLabel lb=new JLabel("Email_id : ");
+        lb.setBounds(5,40,160,20);
+        frame.add(lb);
+        JTextField tf=new JTextField();
+        tf.setBounds(120,40,160,20);
+        frame.add(tf);
+
+        JLabel lb2=new JLabel("password :");
+        lb2.setBounds(5,80,160,20);
+        frame.add(lb2);
+        JPasswordField pass=new JPasswordField();
+        pass.setBounds(120,80,160,20);
+        frame.add(pass);
+
+        JLabel lb22=new JLabel("Confirm-password :");
+        lb22.setBounds(5,120,160,20);
+        frame.add(lb22);
+        JPasswordField pass2=new JPasswordField();
+        pass2.setBounds(120,120,160,20);
+        frame.add(pass2);
+
+
+        JButton button=new JButton("Create   !!");
+        button.setBounds(120,160,100,50);
+        frame.add(button);
+
+
+        JLabel lb3=new JLabel();
+        lb3.setBounds(100,200,240,50);
+        frame.add(lb3);
+
+        JLabel lb4=new JLabel();
+        lb4.setBounds(100,200,240,50);
+        frame.add(lb4);
+
+        ActionListener click1=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String st=tfn.getText();
+                String st1= tf.getText();
+                String st2= pass.getText();
+                String st3=pass2.getText();
+                if(st2.equals(st3)){
+                try{
+                    FileWriter wr=new FileWriter("Web.txt",true);
+                    wr.write(st +" "+st1+" "+st2+" "+st3+"\n");
+                    wr.close();
+                }catch (Exception a){}
+               lb3.setText(" Account  Sucessfull !! ");}
+                else {
+                lb4.setText("Please Re_enter Password");}
+            }
+        };
+
+        button.addActionListener(click1);
+        frame.setVisible(true);}
+    public static void main(String[] args) {
+
+    }
+}
+
