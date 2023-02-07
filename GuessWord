@@ -1,0 +1,54 @@
+package Game;
+import java.util.Random;
+import java.util.Scanner;
+public class GuessWord {
+    public static void main(String[] args) {
+
+        GenrateWord obj=new GenrateWord();
+        obj.check();
+    }
+}
+class GenrateWord{
+    String word(){
+        String []fruit={"apple","mango","orange","banana","grapes"};
+        Random obj=new Random();
+        int index=obj.nextInt(fruit.length-1);
+        String word=fruit[index];
+        return word;
+    }
+    void check(){
+        String word1=word();
+        String word2=word1;
+
+        System.out.println("Enter Guess fruit name :  Hint ::"+word1.length());
+        int b=word1.length();
+
+        String temp[]=new String[b];
+        Scanner obj=new Scanner(System.in);
+
+        for(int i=0,j=0;i<word1.length() &j<=4;)
+        {
+            String a = obj.next();
+            if (word1.contains(a)) {
+                int ind=word1.indexOf(a);
+                temp[ind]=a;
+                word1=word1.replaceFirst(a,"-");
+               /* System.out.println(word1);  for(String z:temp){
+                    System.out.print(z);
+                }*/
+                i++;   if(i==b){
+                    System.out.println("\nyou won the game");
+                    System.out.println("System Fruit  :  "+word2);;break;
+                }System.out.println(" Right ! Next Char Enter ");
+            }
+            else {
+                System.out.println("false  ! Next char enter  ");
+                j++; if(j==4){
+                     System.out.println(" you Losser! ");
+                    System.out.println("System Fruit  :  "+word2);;break;
+                }
+                  }
+        }
+
+    }
+}
