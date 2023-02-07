@@ -1,0 +1,99 @@
+package FinalProject;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Scanner;
+
+public class LoginPage extends SignUp {
+    public static void main(String[] args) {
+        JFrame frame=new JFrame("CCTNS");
+        frame.setSize(800,500);
+       frame.setLayout(null);
+       frame.setBounds(100,100,400,200);
+
+       JButton button=new JButton("Sign  !!");
+       button.setBounds(80,110,100,30);
+       frame.add(button);
+
+       JButton button2=new JButton ("SignUp");  //C:\Users\admin\Desktop\download2.png
+       button2.setBounds(200,110,100,30);
+       frame.add(button2);
+
+       JTextField tf=new JTextField();
+       tf.setBounds(80,40,160,20);
+      // tf.setText("Please enter Your Email_id !!");
+       frame.add(tf);
+
+      JPasswordField pass=new JPasswordField();
+      // pass.setText("Password !!");
+       pass.setBounds(80,80,160,20);
+       frame.add(pass);
+
+       JLabel lb=new JLabel("Email_id : ");
+       lb.setBounds(5,40,160,20);
+       frame.add(lb);
+
+       JLabel lb2=new JLabel("password :");
+       lb2.setBounds(5,80,160,20);
+       frame.add(lb2);
+
+       JLabel lb3=new JLabel();
+       lb3.setBounds(80,140,140,50);
+        frame.add(lb3);
+
+        JLabel lb4=new JLabel();
+        lb4.setBounds(80,160,140,50);
+        frame.add(lb4);
+
+        JLabel lb5=new JLabel();
+        lb5.setBounds(80,160,140,50);
+        frame.add(lb5);
+
+
+        ActionListener click1=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String st=tf.getText();
+                String ps=pass.getText();
+
+                try{
+                    File data=new File("Web.txt");
+                    Scanner sc=new Scanner(data);
+                    while(sc.hasNextLine()){
+                        String data1=sc.nextLine();
+                        System.out.println(data1);
+
+                        if(st.equals("")&&ps.equals("")){lb5.setText("Please Enter email_id");}
+
+                        else {
+                        if(data1.contains(st)&&data1.contains(ps)){
+                            lb3.setText("You Login Sucessful :-");
+
+
+                            System.out.println(data1); break;}
+                        else{
+                            lb4.setText("Wrong Details ! ");
+                            System.out.println("ddsds");}
+                        }
+                    }
+                }
+                catch (Exception ea){}
+            }
+        };
+       button.addActionListener(click1);
+
+        ActionListener click=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                SignUp aa=new SignUp();
+                aa.show();
+            }};
+        button2.addActionListener(click);
+
+    frame.setVisible(true);
+    }
+}
+
