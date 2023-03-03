@@ -1,0 +1,274 @@
+package FinalProject;
+
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.Properties;
+
+public class ElectricBill {
+    static String sender="chandiwalsanwar777@gmail.com";
+    static String name,address,city,state,email,customerName,Cust_City,Cust_Email,Cust_Phone,Current,Prevrious;static int nm,mmm;static long phone,Total;
+    static JFrame jf,jfl,jf2;
+    static public void gui(){
+        jf=new JFrame("Login");
+        jf.setBounds(10,10,600,500);
+        jf.setLayout(null);
+        jf.setBackground(Color.black);
+        JLabel jl=new JLabel("New  Customer");
+        jl.setBounds(250,10,200,20);
+        jf.add(jl);
+        JLabel jln=new JLabel("Customer Name");
+        jln.setBounds(70,50,200,20);
+        jf.add(jln);
+        JTextField jtf=new JTextField();
+        jtf.setBounds(200,50,250,20);
+        jf.add(jtf);
+        JLabel jla=new JLabel("Address");
+        jla.setBounds(70,100,200,20);
+        jf.add(jla);
+        JTextField jta=new JTextField();
+        jta.setBounds(200,100,250,20);
+        jf.add(jta);
+        JLabel jlc=new JLabel("City");
+        jlc.setBounds(70,150,250,20);
+        jf.add(jlc);
+        JTextField jtc=new JTextField();
+        jtc.setBounds(200,150,250,20);
+        jf.add(jtc);
+        JLabel jls=new JLabel("State");
+        jls.setBounds(70,200,250,20);
+        jf.add(jls);
+        JTextField jts=new JTextField();
+        jts.setBounds(200,200,250,20);
+        jf.add(jts);
+        JLabel jle=new JLabel("Email");
+        jle.setBounds(70,250,200,20);
+        jf.add(jle);
+        JTextField jte=new JTextField();
+        jte.setBounds(200,250,250,20);
+        jf.add(jte);
+        JLabel jlp=new JLabel("Phone Number");
+        jlp.setBounds(70,300,200,20);
+        jf.add(jlp);
+        JTextField jtp=new JTextField();
+        jtp.setBounds(200,300,250,20);
+        jf.add(jtp);
+        JButton jb=new JButton("Submit");
+        jb.setBounds(200,350,100,20);
+        jf.add(jb);
+        JButton jb1=new JButton("Clear");
+        jb1.setBounds(400,350,100,20);
+        jf.add(jb1);
+       /* JButton jb2=new JButton("Next");
+        jb2.setBounds(300,350,100,20);
+        jf.add(jb2);*/
+        JLabel jlr=new JLabel();
+        jlr.setBounds(70,400,300,20);
+        jf.add(jlr);
+
+        // jf.setVisible(true);
+
+        jfl=new JFrame("Home page for electricity bill dask");
+        jfl.setBounds(10,10,300,300);
+        jfl.setLayout(null);
+        jfl.setBackground(Color.black);
+        JLabel jll=new JLabel("Welcome on home page");
+        jll.setBounds(100,20,200,20);
+        jfl.add(jll);
+        JLabel jll1=new JLabel("Meter Number");
+        jll1.setBounds(20,60,100,20);
+        jfl.add(jll1);
+
+        JTextField jtfl=new JTextField();
+        jtfl.setBounds(120,60,150,20);
+        jfl.add(jtfl);
+        JButton jbl=new JButton("Login");
+        jbl.setBounds(20,150,80,20);
+        jfl.add(jbl);
+        JButton jbl2=new JButton("Registration");
+        jbl2.setBounds(150,150,120,20);
+        jfl.add(jbl2);
+        jfl.setVisible(true);
+
+        jf2=new JFrame("login");
+        jf2.setBounds(10,10,600,400);
+        jf2.setLayout(null);
+
+        JLabel jlf=new JLabel("Customer Details :-");
+        jlf.setBounds(50,30,200,20);
+        jf2.add(jlf);
+
+        JLabel jl3=new JLabel();  //meter no
+        jl3.setBounds(200,50,500,30);
+        jf2.add(jl3);
+
+        JLabel jl2=new JLabel();//customer datails
+        jl2.setBounds(200,80,400,50);
+        jf2.add(jl2);
+
+        JLabel jl4=new JLabel("Previous meter reading");
+        jl4.setBounds(50,150,200,30);
+        jf2.add(jl4);
+        JLabel jl5=new JLabel();
+        jl5.setBounds(200,150,50,30);
+        jf2.add(jl5);
+
+        JLabel jl6=new JLabel("Current meter reading");
+        jl6.setBounds(50,190,200,30);
+        jf2.add(jl6);
+
+        JTextField tf=new JTextField();
+        tf.setBounds(200,190,150,30);
+        jf2.add(tf);
+
+        JButton jb2=new JButton("Genrate_Bill");
+        jb2.setBounds(170,250,150,50);
+        jf2.add(jb2);
+
+        JLabel jl7=new JLabel();
+        jl7.setBounds(50,300,300,50);
+        jf2.add(jl7);
+
+      //  jl2.setText(name);
+        //jf2.setVisible(true);
+        ActionListener action2=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jfl.setVisible(false);
+                jf.setVisible(true);
+            }
+        };jbl2.addActionListener(action2);
+        ActionListener action=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                name=jtf.getText();
+                address=jta.getText();
+                city=jtc.getText();
+                state=jts.getText();
+                email=jte.getText();
+                phone= Long.parseLong((jtp.getText()));
+                jfl.setVisible(true);
+                jf.setVisible(false);
+                try{Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con= DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java",
+                            "root","123456");
+                    System.out.println("connection done");
+                    String mm="select * from ElectricBill where Meter_Number=(select max(Meter_Number) from ElectricBill)";
+                    Statement st=con.createStatement();
+                    ResultSet rs=st.executeQuery(mm);
+
+
+                    while(rs.next()){
+                        nm=rs.getInt("Meter_Number");
+                        System.out.println(nm);}nm++;
+                    String qr="insert into ElectricBill values(\""+nm+"\",\""+name+"\",\""+address+"\",\"" +city+"\"," +
+                            "\""+state+"\",\""+email+"\","+phone+",0,0)";
+                    Statement st1=con.createStatement();
+                    System.out.println(qr);
+                    st.executeUpdate(qr);
+
+
+                }catch(Exception e1){
+                    System.out.println(e1);}
+                jlr.setText("Congratulations your meter number is "+nm);
+                JOptionPane.showMessageDialog(jf,"Congratulations your meter number is"+nm);
+            }
+        };jb.addActionListener(action);
+
+        ActionListener action3=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jtf.setText("");jta.setText("");  jtc.setText("");jts.setText("");
+                jte.setText("");jtp.setText("");
+            }
+        };jb1.addActionListener(action3);
+        ActionListener action4=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jfl.setVisible(false); jf2.setVisible(true); mmm= Integer.parseInt(jtfl.getText());
+                try{Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con= DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java",
+                            "root","123456");
+                    String fatch="select * from ElectricBill where Meter_Number=\""+mmm+"\"";
+                    Statement st=con.createStatement();
+                    ResultSet rs=st.executeQuery(fatch);
+                    while(rs.next()){
+                        customerName= rs.getString("Customer_Name");
+                        Cust_City=rs.getString("City");
+                        Cust_Phone= rs.getString("Phone_Number");
+                        Cust_Email=rs.getString("Email");
+                        Prevrious=rs.getString("Par_reading");
+                        System.out.println(customerName+Cust_City);}
+
+                }catch (Exception l){
+                    System.out.println(l);
+                }jl2.setText(customerName+ "   ,   "+Cust_City+"   ,  "+Cust_Phone+"  , "+Cust_Email);
+                jl3.setText("Meter No :: "+mmm);
+                jl5.setText(Prevrious);
+            }
+        };jbl.addActionListener(action4);
+
+        ActionListener ac=new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String pr=tf.getText();
+                long aaa= Long.parseLong(pr);
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con2=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/java",
+                            "root","123456");
+                    String update="UPDATE ElectricBill SET Par_Reading=\""+aaa+"\" where Meter_Number=\""+mmm+"\"";
+                    Statement st=con2.createStatement();
+                    st.executeUpdate(update);
+
+                }catch (Exception e2){
+                    System.out.println(e2);
+                }
+                long bb= Long.parseLong(Prevrious);
+                Total=(aaa-bb)*10;
+                jl7.setText("Your Bill :: "+Total+" |-");
+                JOptionPane.showMessageDialog(jl7,"Your Electrictiy Bill Amount :: "+Total+" |-");
+
+                Properties prop=new Properties();
+                prop.put("mail.smtp.port","587");
+                prop.put("mail.smtp.host","smtp.gmail.com");
+                prop.put("mail.smtp.auth","true");
+                prop.put("mail.smtp.starttls.enable","true");
+
+                String uname="chandiwalsanwar777";
+                String pass="rrdxriltxuwwhksu";
+
+                Session session=Session.getInstance(prop, new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(uname,pass);
+                    }
+                });
+
+                try {
+                    Message msg=new MimeMessage(session);
+                    msg.setFrom(new InternetAddress(sender));
+                    msg.setSubject("Your Electricity Bill");
+                    msg.setRecipient(Message.RecipientType.TO,new InternetAddress(Cust_Email));
+                    msg.setText(customerName+"\n"+"Meter_Reading :: "+Total+"\n"+"Your Electrictiy Bill Amount ::  "+Total);
+                    Transport.send(msg);
+                }catch (Exception e2){
+                    System.out.println(e2);
+                }
+            }
+        };jb2.addActionListener(ac);
+    }
+    public static void main(String[] args) {
+
+        gui();
+
+    }
+}
+
+
